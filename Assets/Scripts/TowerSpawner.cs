@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class TowerSpawner : Singleton<TowerSpawner>
 {
-    public Tower towerPrefab;
+    public Tower.TYPE spawnType;
+    public Tower[] towerPrefabs;
 
     private List<Tower> towerList;
     private bool isStartWave;           // 웨이브가 진행중인가?
@@ -17,9 +18,14 @@ public class TowerSpawner : Singleton<TowerSpawner>
     // 타워 생성.
     public void OnRequestTower(TowerGround ground)
     {
+        // 배열중에서 원하는 타워 프리팹.
+        Tower prefab = towerPrefabs[(int)spawnType];
+
         // Instantiate<T>(T, Transform) : T
         // => T형 오브젝트를 복제한 후 Transform의 자식으로 둔다.
-        Tower newTower = Instantiate(towerPrefab, transform);
+
+        // 실제 클론 생성.
+        Tower newTower = Instantiate(prefab, transform);
         newTower.transform.position = ground.transform.position;
         newTower.Setup();
 

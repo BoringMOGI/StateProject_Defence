@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IHpBar
 {
+    public Transform hpBarPivot;
     public float hp;
     public float maxHp;
     public int gold;
@@ -13,6 +14,7 @@ public class Enemy : MonoBehaviour
     int wayIndex;
 
     private System.Action onDead;       // 자신이 죽었음을 알리는 콜백 함수.
+
     public void Setup(Transform[] waypoints, System.Action onDead)
     {
         this.waypoints = waypoints;
@@ -21,6 +23,10 @@ public class Enemy : MonoBehaviour
 
         // 0번째 포지션 (출발점)에 자신을 배치한다.
         transform.position = waypoints[0].position;
+
+        // 체력바 매니저에게서 체력바를 가져온 후 세팅한다.
+        HpBar hpBar = HpBarManager.Instance.GetHpBar();
+        hpBar.Setup(this);
     }
     
     public void OnDamage(float damage)
@@ -65,5 +71,20 @@ public class Enemy : MonoBehaviour
     {
         onDead?.Invoke();                   // 콜백 함수 호출 (스포너가 종료 시점을 잡기 위해서)
         Destroy(gameObject);                // 오브젝트 삭제.
+    }
+
+    public Transform GetPivot()
+    {
+        return hpBarPivot;
+    }
+
+    public float GetHp()
+    {
+        return hp;
+    }
+
+    public float GetMaxHp()
+    {
+        return maxHp;
     }
 }

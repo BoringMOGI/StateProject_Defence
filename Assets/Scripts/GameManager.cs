@@ -59,7 +59,7 @@ public class GameManager : Singleton<GameManager>
     }
     public bool OnUseGold(int amount)
     {
-        if(gold >= amount)      // 골드가 요구량 이상이 경우.
+        if(IsEnoughGold(amount))      // 골드가 요구량 이상이 경우.
         {
             gold -= amount;     // 골드 감소.
             UpdateInfoUI();     // UI 갱신.
@@ -67,6 +67,10 @@ public class GameManager : Singleton<GameManager>
         }
 
         return false;
+    }
+    public bool IsEnoughGold(int amount)
+    {
+        return gold >= amount;
     }
 
     private void GameOver()

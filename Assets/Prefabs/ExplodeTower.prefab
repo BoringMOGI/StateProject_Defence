@@ -97,6 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e4e076c4c73fcf4ea424c749c6b5f7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towerSprite: {fileID: 21300000, guid: fb7da8f5351afd14b9f7c940ad946337, type: 3}
+  towerName: "\uD3ED\uBC1C \uD0C0\uC6CC"
+  towerPrice: 2000
+  towerType: 1
   attackRange: 4
   attackRate: 3
   attackPower: 20

@@ -4,18 +4,17 @@ using UnityEngine;
 
 public class TowerGround : MonoBehaviour
 {
-    private bool isSetTower = false; // 내 위에 타워가 설치 되어 있는가?
-
-    private void OnMouseUpAsButton()
+    private Tower onTower = null;
+    
+    public bool IsSetTower()
     {
-        if (isSetTower)
-            return;
-
-        if (GameManager.Instance.OnUseGold(500))
-        {
-            // 설치 후 설치 여부에 true를 대입한다.
-            TowerSpawner.Instance.OnRequestTower(this);
-            isSetTower = true;
-        }
+        return onTower == null;
+    }
+    public void SetTower(Tower tower)
+    {
+        // 타워 설치 후 동작하라고 명령.
+        onTower = tower;                
+        tower.transform.position = transform.position;
+        tower.Setup();
     }
 }

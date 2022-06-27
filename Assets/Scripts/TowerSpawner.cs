@@ -13,6 +13,8 @@ public class TowerSpawner : Singleton<TowerSpawner>
     private void Start()
     {
         towerList = new List<Tower>();
+
+        TowerButtonManager.Instance.Setup(towerPrefabs);
     }
 
     // 타워 생성.
@@ -50,5 +52,60 @@ public class TowerSpawner : Singleton<TowerSpawner>
 
         foreach (Tower tower in towerList)
             tower.OnEndWave();
+    }
+
+    public void OnSelectTowerType(int index)
+    {
+        Tower.TYPE type = (Tower.TYPE)index;
+        Debug.Log($"타워 타입 변경 : {type}");
+        spawnType = type;
+    }
+
+
+    private Tower GetPrefab(Tower.TYPE type)
+    {
+        // 프리팹 배열에서 type에 해당하는 타워를 검색한다.
+        Tower target = null;
+        for (int i = 0; i < towerPrefabs.Length; i++)
+        {
+            Tower tower = towerPrefabs[i];
+            if (tower.towerType == type)
+            {
+                target = tower;
+                break;
+            }
+        }
+        return target;
+    }
+
+    // 타워 설치 요청.
+    public void OnRequestTower(Tower.TYPE type)
+    {
+        Tower newTower = Instantiate(GetPrefab(type));
+        StartCoroutine(OnSetMode(newTower)); // 프리팹을 클론으로 복제.
+    }
+    IEnumerator OnSetMode(Tower newTower)
+    {
+        Camera cam = Camera.main;
+        Transform target = newTower.transform;
+        while(true)
+        {
+            // 마우스 좌표(Screen)을 월드 좌표로 변환. (단, z축은 카메라의 z와 같기 때문에 0으로 조정)
+            Vector3 pos = cam.ScreenToWorldPoint(Input.mousePosition);
+            pos.z = 0;                        
+            target.position = pos;  // 새로 만든 타워의 포지션을 마우스 포지션으로 대입.
+
+            yield return null;
+        }
+    }
+
+
+    // 타워 가격.
+    public int GetTowerPrice(Tower.TYPE type)
+    {
+        Tower target = GetPrefab(type);
+
+        //return target?.towerPrice ?? 99999;
+        return (target != null) ? target.towerPrice : 999999;
     }
 }

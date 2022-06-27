@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    [System.Serializable]
     public enum TYPE
     {
         Projectile,
@@ -18,7 +19,13 @@ public class Tower : MonoBehaviour
         Attack,     // 공격.
     }
 
+    [Header("Info")]
+    public Sprite towerSprite;
+    public string towerName;
+    public int towerPrice;
     public TYPE towerType;      // 타워의 타입.
+
+    [Header("Weapon")]
     public float attackRange;   // 공격 범위.
     public float attackRate;    // 공격 주기.
     public float attackPower;   // 공격력.

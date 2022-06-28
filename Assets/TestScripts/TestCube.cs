@@ -8,4 +8,9 @@ public class TestCube : MonoBehaviour
     public int price;
     public string cubeName;
 
+    private void Funtion()
+    {
+        Debug.Log("그냥 함수!");
+    }
+
 }

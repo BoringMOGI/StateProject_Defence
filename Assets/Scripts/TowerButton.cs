@@ -30,7 +30,7 @@ public class TowerButton : MonoBehaviour
         }
         else
         {
-            Debug.Log("골드가 부족합니다.");
+            MessagePopup.Instance.Show("골드가 부족합니다.");
         }
     }
 

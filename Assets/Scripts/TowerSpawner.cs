@@ -5,10 +5,12 @@ using UnityEngine;
 public class TowerSpawner : Singleton<TowerSpawner>
 {
     public Tower.TYPE spawnType;
+    public LayerMask towerGroundMask;
     public Tower[] towerPrefabs;
 
     private List<Tower> towerList;
     private bool isStartWave;           // 웨이브가 진행중인가?
+    private bool isSetMode;             // 타워 설치 중인가?
 
     private void Start()
     {
@@ -81,6 +83,11 @@ public class TowerSpawner : Singleton<TowerSpawner>
     // 타워 설치 요청.
     public void OnRequestTower(Tower.TYPE type)
     {
+        if (isSetMode)
+            return;
+
+        isSetMode = true;
+
         Tower newTower = Instantiate(GetPrefab(type));
         StartCoroutine(OnSetMode(newTower)); // 프리팹을 클론으로 복제.
     }
@@ -88,15 +95,50 @@ public class TowerSpawner : Singleton<TowerSpawner>
     {
         Camera cam = Camera.main;
         Transform target = newTower.transform;
+
         while(true)
         {
             // 마우스 좌표(Screen)을 월드 좌표로 변환. (단, z축은 카메라의 z와 같기 때문에 0으로 조정)
-            Vector3 pos = cam.ScreenToWorldPoint(Input.mousePosition);
-            pos.z = 0;                        
-            target.position = pos;  // 새로 만든 타워의 포지션을 마우스 포지션으로 대입.
+            Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 targetPos = mousePos;
+            targetPos.z = 0;
+
+            // 새로 만든 타워의 포지션을 마우스 포지션으로 대입.
+            target.position = targetPos;
+
+            // 레이를 이용해 타워 그라운드 찾기.
+            TowerGround ground = null;
+            RaycastHit hit;
+            if(Physics.Raycast(mousePos, Vector3.forward, out hit, float.MaxValue, towerGroundMask))
+            {
+                ground = hit.collider.GetComponent<TowerGround>();
+                target.position = ground.transform.position;                                
+            }
+
+            // 마우스 버튼 클릭.
+            if(Input.GetMouseButtonDown(0))
+            {
+                // 그라운드가 아닌 빈 공간 클릭. (설치 모드 취소)
+                if (ground == null)
+                {
+                    Destroy(newTower.gameObject);
+                    break;
+                }
+                // 그라운드를 클릭했는데 설치 가능 상태일 경우.
+                // 그리고 설치하려는 타워의 
+                else if (ground.IsSetTower())
+                { 
+                    GameManager.Instance.OnUseGold(newTower.towerPrice);
+                    ground.SetTower(newTower);
+                    break;
+                }
+            }
 
             yield return null;
         }
+
+        // 타워 설치 모드 종료.
+        isSetMode = false;
     }
 
 

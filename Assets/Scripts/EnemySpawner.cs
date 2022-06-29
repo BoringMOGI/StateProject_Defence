@@ -20,12 +20,14 @@ public class EnemySpawner : MonoBehaviour
         waypoints = new Transform[wayPointParnet.childCount];   // 부모 오브젝트의 자식의 개수만큼 배열 생성.
         for (int i = 0; i < wayPointParnet.childCount; i++)
             waypoints[i] = wayPointParnet.GetChild(i);
+
+        // 이벤트 등록.
+        GameManager.Instance.onStartWave += Spawn;
     }
     public void Spawn()
     {
         StartCoroutine(SpawnProcess());
     }
-
     IEnumerator SpawnProcess()
     {
         int deadCount = 0;        // 적의 죽은 개수.

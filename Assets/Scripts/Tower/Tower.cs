@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Tower : MonoBehaviour
+public class Tower : MonoBehaviour, ISelect
 {
     [System.Serializable]
     public enum TYPE
@@ -30,12 +31,35 @@ public class Tower : MonoBehaviour
     public float attackRate;    // 공격 주기.
     public float attackPower;   // 공격력.
     public LayerMask attackMask;// 공격 대상 마스크.
-   
+
+    [Header("Etc")]
+    public LineRenderer lineRenderer;
+
+
     private STATE state;        // 상태.
     private bool isSet;         // 세팅이 되었다.
     private Enemy target;       // 공격 대상.
 
     protected float nextAttackTime;   // 다음 공격 시간.
+
+    private void Start()
+    {        
+        int segmenet = 360;
+        lineRenderer.useWorldSpace = false;     // 월드 기준으로 사용하지 않겠다.
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
+        lineRenderer.loop = true;               // 라인의 반복 (마지막과 처음을 연결)
+        lineRenderer.positionCount = segmenet;  // segment만큼 포지션 카운트 세팅.
+
+        Vector3[] points = new Vector3[segmenet];   // 정점.
+        for(int i = 0; i<points.Length; i++)
+        {
+            float rad = Mathf.Deg2Rad * (i * 360f / segmenet);
+            points[i] = new Vector3(Mathf.Sin(rad) * attackRange, Mathf.Cos(rad) * attackRange, 0f);
+        }
+
+        lineRenderer.SetPositions(points);      // 계산한 정점의 위치를 대입.
+    }
 
     void Update()
     {
@@ -63,16 +87,33 @@ public class Tower : MonoBehaviour
         state = STATE.Ready;
         isSet = true;
         target = null;
+
+        lineRenderer.enabled = false;
+
+        // 게임이 진행 중일때 설치하면 바로 탐색 모드로 들어간다.
+        if (GameManager.Instance.isWaving)
+            state = STATE.Search;
+
+        // 이벤트 등록.
+        // 함수에도 고유 ID가 있기 때문에 구분이 가능하다.
+        GameManager.Instance.onStartWave += OnStartWave;
+        GameManager.Instance.onEndWave += OnEndWave;
     }
-    public void OnStartWave()
+    private void OnDestroy()
+    {
+        // 오브젝트가 삭제되었을 때 불리는 이벤트 함수.
+        GameManager.Instance.onStartWave -= OnStartWave;
+        GameManager.Instance.onEndWave -= OnEndWave;
+    }
+
+    private void OnStartWave()
     {
         // 웨이브가 시작되었으니 탐지를 시작한다.
         state = STATE.Search;
     }
-    public void OnEndWave()
+    private void OnEndWave()
     {
         // 웨이브가 끝났으니 동작을 쉰다.
-
         state = STATE.Ready;
     }
 
@@ -132,9 +173,21 @@ public class Tower : MonoBehaviour
     {
     }
 
-    private void OnDrawGizmos()
+    public void OnSelect()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        if (!isSet)
+            return;
+
+        lineRenderer.enabled = true;
+        TowerInfoUI.Instance.OnShow(this);
+    }
+
+    public void OnDeselect()
+    {
+        if (!isSet)
+            return;
+
+        lineRenderer.enabled = false;
+        TowerInfoUI.Instance.OnClose();
     }
 }

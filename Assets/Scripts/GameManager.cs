@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public TowerSpawner towerSpawner;
-    public EnemySpawner enemySpawner;
     public GameInfoUI gameInfoUI;
 
     public int wave;        // 몇 웨이브인지?
     public int gold;        // 소지금.
     public int hp;          // 체력.
     public bool isWaving;   // 웨이브를 진행중인가?
+
+    public delegate void FuntionEvent();
+    public event FuntionEvent onStartWave;      // 웨이브 시작 이벤트.
+    public event FuntionEvent onEndWave;        // 웨이브 종료 이벤트.
 
     private void Start()
     {
@@ -24,17 +26,16 @@ public class GameManager : Singleton<GameManager>
         if (isWaving)
             return;
 
-        towerSpawner.OnStartWave();     // 타워들에게 웨이브 시작을 전달.
-        enemySpawner.Spawn();           // 적 생성기에게 스폰 명령 전달.
         isWaving = true;
+        onStartWave?.Invoke();          // 이벤트 등록 함수 호출.
 
         Debug.Log("OnStartWave");
     }
     public void OnEndWave()
     {
-        towerSpawner.OnEndWave();       // 타워들에게 웨이브 종료를 전달.
-        isWaving = false;
         wave += 1;                      // 웨이브가 끝났기 때문에 다음 웨이브로 변환.
+        isWaving = false;
+        onEndWave?.Invoke();            // 이벤트 등록 함수 호출.
 
         UpdateInfoUI();                 // UI업데이트.
         Debug.Log("OnEndWave");

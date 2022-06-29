@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 class Class
 {
@@ -22,15 +23,6 @@ public class TestManager : MonoBehaviour
     Coroutine[] coroutines;
     void Start()
     {
-        StartCoroutine(Process("AAA"));
-        StartCoroutine(Process("BBB"));
-        StartCoroutine(Process("CCC"));
-
-        coroutines = new Coroutine[3];
-
-        coroutines[0] = StartCoroutine(nameof(Process), "DDD");
-        coroutines[1] = StartCoroutine(nameof(Process), "EEE");
-        coroutines[2] = StartCoroutine(nameof(Process), "FFF");
     }
 
     private void Update()
@@ -39,6 +31,8 @@ public class TestManager : MonoBehaviour
         {
             StopCoroutine(coroutines[1]);
         }
+
+        Debug.Log(EventSystem.current.currentSelectedGameObject);
     }
 
     IEnumerator Process(string str)

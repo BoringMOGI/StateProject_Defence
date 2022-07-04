@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4053851741912167219
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1030642121608490274, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: attackRate
+      value: 2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1030642121608490274, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: towerPrice
+      value: 7000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1030642121608490274, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: attackPower
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 1030642121608490274, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: attackRange
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1030642121608490274, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: towerSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 382db17c99667b044afa808981f7f2cc, type: 3}
+    - target: {fileID: 7232660665315102117, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_Name
+      value: ExplodeTower_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7416470269820452919, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 382db17c99667b044afa808981f7f2cc, type: 3}
+    - target: {fileID: 7907620204538998465, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907620204538998465, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907620204538998465, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907620204538998465, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907620204538998465, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907620204538998465, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907620204538998465, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907620204538998465, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907620204538998465, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907620204538998465, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907620204538998465, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 266816cd10b22864abaafac8da5da0da, type: 3}

@@ -1,21 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class TowerSpawner : Singleton<TowerSpawner>
 {
-    public Tower.TYPE spawnType;
-    public LayerMask towerGroundMask;
-    public Tower[] towerPrefabs;
+    public LayerMask towerGroundMask;   // 설치 땅 레이어.
+    public TowerGroup[] towerGroups;    // 타입별 타워 그룹 배열.
 
-    private List<Tower> towerList;
     private bool isSetMode;             // 타워 설치 중인가?
 
     private void Start()
     {
-        towerList = new List<Tower>();
-
-        TowerButtonManager.Instance.Setup(towerPrefabs);
+        TowerButtonManager.Instance.Setup(towerGroups);
 
         GameManager.Instance.onStartWave += OnStartWave;
         GameManager.Instance.onEndWave += OnEndWave;
@@ -31,28 +28,39 @@ public class TowerSpawner : Singleton<TowerSpawner>
 
     }
 
-    public void OnSelectTowerType(int index)
-    {
-        Tower.TYPE type = (Tower.TYPE)index;
-        Debug.Log($"타워 타입 변경 : {type}");
-        spawnType = type;
-    }
-
-
     private Tower GetPrefab(Tower.TYPE type)
     {
-        // 프리팹 배열에서 type에 해당하는 타워를 검색한다.
-        Tower target = null;
-        for (int i = 0; i < towerPrefabs.Length; i++)
+        // 프리팹 그룹에서 type에 해당하는 그룹을 검색한다.
+        // Linq 쿼리문.
+        var find = from g in towerGroups        // 어디서부터?
+                   where g.type == type         // 무슨 조건으로?
+                   select g.firstTower;         // 무슨 값을 가져 갈것인가?
+
+        // 검색 결과 Tower들을 가지고 있지만 어차피 하나만 들고있기 때문에 First로 받아옴.
+        return find.First();
+    }
+    private Tower GetNextPrefab(Tower tower)
+    {
+        var find = from g in towerGroups            // 어디서부터?
+                   where g.type == tower.towerType  // 무슨 조건으로?
+                   select g;                        // 무슨 값을 가져 갈것인가?
+
+        TowerGroup group = find.First();
+
+        // Towers배열에서 매개변수 tower는 index가 몇인가?
+        int currentIndex = System.Array.IndexOf(group.towers, tower);
+        currentIndex++;
+        Debug.Log(currentIndex);
+        
+        // 만약 최대 레벨을 넘어선다면 생성할 수 없다.
+        if(group.towers.Length <= group.MaxLevel)
         {
-            Tower tower = towerPrefabs[i];
-            if (tower.towerType == type)
-            {
-                target = tower;
-                break;
-            }
+            return null;
         }
-        return target;
+        else
+        {
+            return group.towers[currentIndex];
+        }
     }
 
     // 타워 설치 요청.
@@ -124,5 +132,18 @@ public class TowerSpawner : Singleton<TowerSpawner>
 
         //return target?.towerPrice ?? 99999;
         return (target != null) ? target.towerPrice : 999999;
+    }
+
+    public void OnUpgradeTower(Tower tower)
+    {
+        Tower prefab = GetNextPrefab(tower);    // 매개변수 tower의 다음 레벨 타워를 검색한다.
+        Debug.Log(prefab.name);
+    }
+    public void OnSellTower(Tower tower)
+    {
+        int sellPrice = tower.sellPrice;    // 판매가격.
+        tower.OnDeselect();                 // 선택해제.
+        Destroy(tower.gameObject);          // 삭제.
+        GameManager.Instance.OnAddGold(sellPrice);  // 돈 얻기.
     }
 }

@@ -35,6 +35,12 @@ public class Tower : MonoBehaviour, ISelect
     [Header("Etc")]
     public LineRenderer lineRenderer;
 
+    // Mathf.Rount : float (반올림)
+    // Mathf.Ceil : float (올림)
+    // Mathf.Floor : float (내림)
+    public int sellPrice => Mathf.RoundToInt(towerPrice * 0.4f);
+
+
 
     private STATE state;        // 상태.
     private bool isSet;         // 세팅이 되었다.
@@ -180,14 +186,17 @@ public class Tower : MonoBehaviour, ISelect
 
         lineRenderer.enabled = true;
         TowerInfoUI.Instance.OnShow(this);
+        TowerControlUI.Instance.Open(this);
     }
-
     public void OnDeselect()
     {
         if (!isSet)
             return;
 
+        Debug.Log(name);
+
         lineRenderer.enabled = false;
         TowerInfoUI.Instance.OnClose();
+        TowerControlUI.Instance.Close();
     }
 }

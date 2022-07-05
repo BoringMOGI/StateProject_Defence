@@ -20,6 +20,10 @@ PrefabInstance:
       value: "\uC77C\uBC18 \uD0C0\uC6CC lv.2"
       objectReference: {fileID: 0}
     - target: {fileID: 2071607614772981742, guid: 19fa6fd286dbc514bb231b6f94bb353f, type: 3}
+      propertyPath: towerLevel
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2071607614772981742, guid: 19fa6fd286dbc514bb231b6f94bb353f, type: 3}
       propertyPath: towerPrice
       value: 4000
       objectReference: {fileID: 0}

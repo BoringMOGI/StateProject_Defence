@@ -19,6 +19,14 @@ public class GameManager : Singleton<GameManager>
     {
         UpdateInfoUI();
     }
+    private void Update()
+    {
+        // 옵션창 열기, Pause.
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            OptionWindow.Instance.SwitchOption();
+        }
+    }
 
     public void OnStartWave()
     {
@@ -88,4 +96,11 @@ public class GameManager : Singleton<GameManager>
         gameInfoUI.UpdateInfo(gold, hp, wave);
     }
 
+}
+
+
+public static class CTime
+{
+    public static bool isPause = false;
+    public static float deltaTime => Time.deltaTime * (isPause ? 0.0f : 1.0f);
 }

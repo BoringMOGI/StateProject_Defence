@@ -14,8 +14,6 @@ public class Bullet : MonoBehaviour
 
     public void Setup(Enemy target, float moveSpeed, float power)
     {
-        Debug.Log("생성!!");
-
         this.target = target;
         this.moveSpeed = moveSpeed;
         this.power = power;
@@ -32,7 +30,7 @@ public class Bullet : MonoBehaviour
 
         Vector3 position = transform.position;              // 내 위치.
         Vector3 destination = target.transform.position;    // 목적지.
-        float movement = moveSpeed * Time.deltaTime;        // 이동량.
+        float movement = moveSpeed * CTime.deltaTime;        // 이동량.
 
         // 좌표 이동.
         transform.position = Vector3.MoveTowards(position, destination, movement);

@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour, IHpBar
             // MoveTowards : Vector3
             // = A지점에서 B지점까지 T만큼 움직였을 때의 위치를 반환.
             Vector3 current = transform.position;               // A
-            float movement = moveSpeed * Time.deltaTime;        // T
+            float movement = moveSpeed * CTime.deltaTime;        // T
             transform.position = Vector3.MoveTowards(current, destination, movement);
         }
     }

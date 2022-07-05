@@ -25,6 +25,7 @@ public class Tower : MonoBehaviour, ISelect
     public string towerName;
     public int towerPrice;
     public TYPE towerType;      // 타워의 타입.
+    public int towerLevel;      // 타워의 레벨.
 
     [Header("Weapon")]
     public float attackRange;   // 공격 범위.
@@ -34,19 +35,20 @@ public class Tower : MonoBehaviour, ISelect
 
     [Header("Etc")]
     public LineRenderer lineRenderer;
+    public TowerGround ground;          // 설치된 땅.
 
     // Mathf.Rount : float (반올림)
     // Mathf.Ceil : float (올림)
     // Mathf.Floor : float (내림)
     public int sellPrice => Mathf.RoundToInt(towerPrice * 0.4f);
 
-
-
     private STATE state;        // 상태.
     private bool isSet;         // 세팅이 되었다.
     private Enemy target;       // 공격 대상.
+    
 
     protected float nextAttackTime;   // 다음 공격 시간.
+
 
     private void Start()
     {        
@@ -88,8 +90,9 @@ public class Tower : MonoBehaviour, ISelect
     }
 
     // 타워가 설치된 후 초기화 되는 함수.
-    public void Setup()
+    public void Setup(TowerGround ground)
     {
+        this.ground = ground;
         state = STATE.Ready;
         isSet = true;
         target = null;
@@ -192,8 +195,6 @@ public class Tower : MonoBehaviour, ISelect
     {
         if (!isSet)
             return;
-
-        Debug.Log(name);
 
         lineRenderer.enabled = false;
         TowerInfoUI.Instance.OnClose();

@@ -15,6 +15,6 @@ public class TowerGround : MonoBehaviour
         // 타워 설치 후 동작하라고 명령.
         onTower = tower;                
         tower.transform.position = transform.position;
-        tower.Setup();
+        tower.Setup(this);
     }
 }

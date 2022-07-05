@@ -12,6 +12,10 @@ PrefabInstance:
       value: 2.7
       objectReference: {fileID: 0}
     - target: {fileID: 1030642121608490274, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
+      propertyPath: towerLevel
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1030642121608490274, guid: 266816cd10b22864abaafac8da5da0da, type: 3}
       propertyPath: towerPrice
       value: 7000
       objectReference: {fileID: 0}

@@ -47,19 +47,18 @@ public class TowerSpawner : Singleton<TowerSpawner>
 
         TowerGroup group = find.First();
 
-        // Towers배열에서 매개변수 tower는 index가 몇인가?
-        int currentIndex = System.Array.IndexOf(group.towers, tower);
-        currentIndex++;
-        Debug.Log(currentIndex);
-        
+        // 레벨은 1부터, 실제 인덱스는 0부터 시작하기 때문에...
+        int nextIndex = tower.towerLevel;
+
         // 만약 최대 레벨을 넘어선다면 생성할 수 없다.
-        if(group.towers.Length <= group.MaxLevel)
+        if(group.MaxLevel <= nextIndex)
         {
             return null;
         }
         else
         {
-            return group.towers[currentIndex];
+            // 내가 원하는 다음 타워.
+            return group.towers[nextIndex];
         }
     }
 
@@ -136,8 +135,24 @@ public class TowerSpawner : Singleton<TowerSpawner>
 
     public void OnUpgradeTower(Tower tower)
     {
-        Tower prefab = GetNextPrefab(tower);    // 매개변수 tower의 다음 레벨 타워를 검색한다.
-        Debug.Log(prefab.name);
+        Tower nextLevelPrefab = GetNextPrefab(tower);    // 매개변수 tower의 다음 레벨 타워를 검색한다.
+        if (nextLevelPrefab == null)
+            return;
+
+        if(GameManager.Instance.OnUseGold(nextLevelPrefab.towerPrice))
+        {
+            TowerGround ground = tower.ground;      // 기존에 설치되어있던 땅 대입.
+            tower.OnDeselect();                     // 비선택.
+            Destroy(tower.gameObject);              // 삭제.
+
+            Tower newTower = Instantiate(nextLevelPrefab);  // 새로운 클론 생성.
+            ground.SetTower(newTower);                      // 땅에 설치.
+        }
+        else
+        {
+            MessagePopup.Instance.Show("골드가 부족합니다.");
+        }
+        
     }
     public void OnSellTower(Tower tower)
     {

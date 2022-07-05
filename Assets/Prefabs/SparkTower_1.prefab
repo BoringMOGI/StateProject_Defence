@@ -103,6 +103,7 @@ MonoBehaviour:
   towerName: "\uC2A4\uD30C\uD06C \uD0C0\uC6CC"
   towerPrice: 1200
   towerType: 2
+  towerLevel: 1
   attackRange: 1.5
   attackRate: 2
   attackPower: 10
@@ -110,6 +111,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   lineRenderer: {fileID: -8891665146165211961}
+  ground: {fileID: 0}
   sparkRange: 1.5
 --- !u!120 &-8891665146165211961
 LineRenderer:

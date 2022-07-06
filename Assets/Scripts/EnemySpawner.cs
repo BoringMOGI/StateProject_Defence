@@ -4,13 +4,12 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawner : Singleton<EnemySpawner>
 {
     public Enemy enemyPrefab;           // 적 프리팹.
     public int spawnCount;              // 생성 개수.
     public float spawnRate;             // 생성 간격(시간)
     public Transform wayPointParnet;    // 목적지의 부모 오브젝트.
-    public UnityEvent OnEndWave;        // (UnityEvent : 컴포넌트에 노출시킬 수 있는 델리게이트)
 
     private Transform[] waypoints;      // 목적지 정보.
 
@@ -21,14 +20,13 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < wayPointParnet.childCount; i++)
             waypoints[i] = wayPointParnet.GetChild(i);
 
-        // 이벤트 등록.
-        GameManager.Instance.onStartWave += Spawn;
     }
-    public void Spawn()
+
+    public void Spawn(System.Action onEndWave)
     {
-        StartCoroutine(SpawnProcess());
+        StartCoroutine(SpawnProcess(onEndWave));
     }
-    IEnumerator SpawnProcess()
+    IEnumerator SpawnProcess(System.Action onEndWave)
     {
         int deadCount = 0;        // 적의 죽은 개수.
         int amount = spawnCount;  // 생성 개수.
@@ -50,7 +48,7 @@ public class EnemySpawner : MonoBehaviour
             yield return null;
 
         // 웨이브가 끝났다.
-        OnEndWave?.Invoke();
+        onEndWave?.Invoke();
     }
 
 }

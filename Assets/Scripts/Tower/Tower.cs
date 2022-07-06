@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 public class Tower : MonoBehaviour, ISelect
 {
@@ -81,7 +82,7 @@ public class Tower : MonoBehaviour, ISelect
             case STATE.Ready:
                 break;
             case STATE.Search:
-                Search();
+                SearchNear();
                 break;
             case STATE.Attack:
                 Attack();
@@ -126,6 +127,31 @@ public class Tower : MonoBehaviour, ISelect
         state = STATE.Ready;
     }
 
+    private void SearchNear()
+    {
+        // 1.나와의 거리가 공격 사거리 이하여야한다.
+        // 2.그 중에서 가장 거리가 먼 적을 타겟으로 잡는다.
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, attackRange, attackMask);
+
+        // 익명 클래스.
+        var targets = colliders.Select(target => new
+        {
+            component = target.GetComponent<Enemy>(),
+            distance = Vector2.Distance(transform.position, target.transform.position)
+        });
+
+        // 쿼리문.
+        var find = from target in targets
+                   where target.component != null && target.distance < attackRange
+                   orderby target.distance descending
+                   select target.component;
+
+        if (find.Count() <= 0)
+            return;
+
+        target = find.First();
+        state = STATE.Attack;
+    }
     private void Search()
     {
         // attackRange의 반지름을 가지는 원형 범위를 체크한다.

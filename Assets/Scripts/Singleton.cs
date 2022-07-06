@@ -15,6 +15,5 @@ public class Singleton<ClassType> : MonoBehaviour
         // ClassType에 어떤 자료형이 올지 모르겠지만
         // 적어도 class형태이기 때문에 this를 형변환 가능하다.
         instance = this as ClassType;
-        Debug.Log("singleton Awake");
     }
 }

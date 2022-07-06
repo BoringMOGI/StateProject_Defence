@@ -9,7 +9,9 @@ public class GameManager : Singleton<GameManager>
     public int wave;        // 몇 웨이브인지?
     public int gold;        // 소지금.
     public int hp;          // 체력.
-    public bool isWaving;   // 웨이브를 진행중인가?
+
+    public bool isWaving;       // 웨이브를 진행중인가?
+    private bool isGameOver;    // 게임오버가 되었는가?
 
     public delegate void FuntionEvent();
     public event FuntionEvent onStartWave;      // 웨이브 시작 이벤트.
@@ -17,6 +19,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        isGameOver = false;
         UpdateInfoUI();
     }
     private void Update()
@@ -36,7 +39,7 @@ public class GameManager : Singleton<GameManager>
 
         isWaving = true;
         onStartWave?.Invoke();          // 이벤트 등록 함수 호출.
-
+        EnemySpawner.Instance.Spawn(OnEndWave);
         Debug.Log("OnStartWave");
     }
     public void OnEndWave()
@@ -52,6 +55,9 @@ public class GameManager : Singleton<GameManager>
     // 적이 골에 도착해서 체력을 깍는다.
     public void OnDamageHp()
     {
+        if (isGameOver)
+            return;
+
         hp -= 1;
         if(hp <= 0)
         {
@@ -85,6 +91,7 @@ public class GameManager : Singleton<GameManager>
     private void GameOver()
     {
         Debug.Log("Game Over...");
+        isGameOver = true;
     }
     private void GameClear()
     {

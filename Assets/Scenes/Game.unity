@@ -2634,7 +2634,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &633352645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4668,7 +4668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1138096985
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6989,21 +6989,6 @@ MonoBehaviour:
   spawnCount: 20
   spawnRate: 0.2
   wayPointParnet: {fileID: 1443401826}
-  OnEndWave:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1416697605}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnEndWave
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!4 &1807404781
 Transform:
   m_ObjectHideFlags: 0

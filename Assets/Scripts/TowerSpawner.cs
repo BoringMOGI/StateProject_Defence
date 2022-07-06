@@ -78,6 +78,8 @@ public class TowerSpawner : Singleton<TowerSpawner>
         Camera cam = Camera.main;
         Transform target = newTower.transform;
 
+        TowerGround.OnSwitchLight(true);
+
         while(true)
         {
             // 마우스 좌표(Screen)을 월드 좌표로 변환. (단, z축은 카메라의 z와 같기 때문에 0으로 조정)
@@ -121,6 +123,7 @@ public class TowerSpawner : Singleton<TowerSpawner>
 
         // 타워 설치 모드 종료.
         isSetMode = false;
+        TowerGround.OnSwitchLight(false);
     }
 
 

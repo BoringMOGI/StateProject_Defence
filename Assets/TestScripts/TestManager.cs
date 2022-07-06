@@ -4,46 +4,32 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+class Player
+{
+    public int score;        // 클래스 변수.
+    public int number;       // 인스턴스 변수.
+
+    public int Number => number;
+}
+
 public class TestManager : MonoBehaviour
 {
-    public UnityEngine.UI.Image image;
-
     private void Start()
     {
-    }
+        Player player = new Player() { score = 100, number = 200 };
+        var enemy = new { name = "고블린", hp = 100, power = 20f };
 
-    [ContextMenu("Fade")]
-    public void Fade()
-    {
-        StartCoroutine(FadeOut());
-    }
-    IEnumerator FadeOut()
-    {
-        float fadeTime = 1.0f;
-        float time = 0.0f;
+        Player[] players = new Player[] {
+            new Player{ score = 100, number = 50 },
+            new Player{ score = 200, number = 60 },
+            new Player{ score = 300, number = 70 },
+        };
 
-        while(true)
+        int[] scores = players.Select(player => player.score).ToArray();
+        foreach(int s in scores)
         {
-            Debug.Log(Time.deltaTime);
-            time = Mathf.Clamp(time + Time.deltaTime, 0.0f, fadeTime);
-
-            Color color = image.color;
-            color.a = time / fadeTime;
-            image.color = color;
-            yield return null;
-
-            if (color.a >= 1.0f)
-                break;
+            Debug.Log(s);
         }
-
-        SceneManager.sceneLoaded += OnLoadScene;
-        SceneManager.LoadScene("Test");
     }
-
-    void OnLoadScene(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log("씬이 로드가 되면 불리는 함수");
-    }
-
 
 }
